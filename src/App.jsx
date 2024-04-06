@@ -1,7 +1,11 @@
 import { SignUp } from "./pages/sign-up";
 
 function App() {
-  return <SignUp />;
+  return (
+    <div class="container">
+      <SignUp />
+    </div>
+  );
 }
 
 export default App;

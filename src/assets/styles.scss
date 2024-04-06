@@ -1,0 +1,22 @@
+$primary: #cb095a;
+
+@import 'node_modules/bootstrap/scss/bootstrap';
+
+.card {
+    border: 1px solid var(--bs-black);
+    box-shadow: 2px 2px var(--bs-black);
+}
+
+.btn {
+    box-shadow: 3px 3px var(--bs-black);
+    transform: translate(-3px, -3px);
+    transition: unset;
+    &:disabled {
+        box-shadow: unset;
+        transform: unset;
+    }
+    &:active {
+        box-shadow: 1px 1px var(--bs-black);
+        transform: translate(-1px, -1px);
+    }
+}

@@ -18,11 +18,25 @@ export function SignUp() {
   };
 
   return (
-    <form onSubmit={submit}>
-      <h1>Sign Up</h1>
-      <label for="email">Email</label>
-      <input id="email" onInput={onInputEmail} />
-      <button disabled={!email()}>Sign Up</button>
-    </form>
+    <div class="col-lg-6 offset-lg-3 col-md-8 offset-md-2">
+      <form class="card" onSubmit={submit}>
+        <div class="card-header text-center">
+          <h1>Sign Up</h1>
+        </div>
+        <div class="card-body">
+          <div class="mb-3">
+            <label for="email" class="form-label">
+              Email
+            </label>
+            <input id="email" class="form-control" onInput={onInputEmail} />
+          </div>
+          <div class="text-center">
+            <button disabled={!email()} class="btn btn-primary">
+              Sign Up
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
   );
 }
