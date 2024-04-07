@@ -4,9 +4,11 @@ export function SignUp() {
   const [apiProgress, setApiProgress] = createSignal(false);
   const [successMessage, setSuccessMessage] = createSignal();
   const [errorMessage, setErrorMessage] = createSignal();
+  const [errors, setErrors] = createSignal({});
 
   const onInputEmail = (event) => {
     setEmail(event.target.value);
+    setErrors({});
   };
 
   const submit = async (event) => {
@@ -23,7 +25,11 @@ export function SignUp() {
         body: JSON.stringify({ email: email() }),
       });
       const body = await response.json();
-      setSuccessMessage(body.message);
+      if (response.status === 200) {
+        setSuccessMessage(body.message);
+      } else if (response.status === 400) {
+        setErrors(body.validationErrors);
+      }
     } catch {
       setErrorMessage("Unexpected error occured, please try again");
     } finally {
@@ -43,6 +49,7 @@ export function SignUp() {
               Email
             </label>
             <input id="email" class="form-control" onInput={onInputEmail} />
+            <span class="small text-danger">{errors().email}</span>
           </div>
           <Show when={errorMessage()}>
             <div class="alert alert-danger" role="alert">
