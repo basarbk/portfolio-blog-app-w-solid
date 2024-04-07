@@ -1,4 +1,5 @@
-import { Show, createSignal } from "solid-js";
+import { createSignal } from "solid-js";
+import { AppAlert, AppButton, AppInput } from "../../components";
 export function SignUp() {
   const [email, setEmail] = createSignal();
   const [apiProgress, setApiProgress] = createSignal(false);
@@ -51,41 +52,19 @@ export function SignUp() {
           <h1>Sign Up</h1>
         </div>
         <div class="card-body">
-          <div class="mb-3">
-            <label for="email" class="form-label">
-              Email
-            </label>
-            <input
-              id="email"
-              class="form-control"
-              onInput={onInputEmail}
-              type="email"
-            />
-            <span class="small text-danger">{errors().email}</span>
-          </div>
-          <Show when={errorMessage()}>
-            <div class="alert alert-danger" role="alert">
-              {errorMessage()}
-            </div>
-          </Show>
-          <Show when={successMessage()}>
-            <div class="alert alert-success" role="alert">
-              {successMessage()}
-            </div>
-          </Show>
+          <AppInput
+            id="email"
+            label="Email"
+            onInput={onInputEmail}
+            type="email"
+            help={errors().email}
+          />
+          <AppAlert variant="danger">{errorMessage()}</AppAlert>
+          <AppAlert>{successMessage()}</AppAlert>
           <div class="text-center">
-            <button
-              disabled={!email() || apiProgress()}
-              class="btn btn-primary"
-            >
-              <Show when={apiProgress()}>
-                <span
-                  class="spinner-border spinner-border-sm"
-                  aria-hidden="true"
-                ></span>
-              </Show>
+            <AppButton loading={apiProgress()} disabled={!email()}>
               Sign Up
-            </button>
+            </AppButton>
           </div>
         </div>
       </form>
