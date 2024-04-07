@@ -3,6 +3,7 @@ export function SignUp() {
   const [email, setEmail] = createSignal();
   const [apiProgress, setApiProgress] = createSignal(false);
   const [successMessage, setSuccessMessage] = createSignal();
+  const [errorMessage, setErrorMessage] = createSignal();
 
   const onInputEmail = (event) => {
     setEmail(event.target.value);
@@ -12,6 +13,7 @@ export function SignUp() {
     event.preventDefault();
     setApiProgress(true);
     setSuccessMessage();
+    setErrorMessage();
     try {
       const response = await fetch("/api/users", {
         method: "POST",
@@ -23,6 +25,7 @@ export function SignUp() {
       const body = await response.json();
       setSuccessMessage(body.message);
     } catch {
+      setErrorMessage("Unexpected error occured, please try again");
     } finally {
       setApiProgress(false);
     }
@@ -41,6 +44,11 @@ export function SignUp() {
             </label>
             <input id="email" class="form-control" onInput={onInputEmail} />
           </div>
+          <Show when={errorMessage()}>
+            <div class="alert alert-danger" role="alert">
+              {errorMessage()}
+            </div>
+          </Show>
           <Show when={successMessage()}>
             <div class="alert alert-success" role="alert">
               {successMessage()}
