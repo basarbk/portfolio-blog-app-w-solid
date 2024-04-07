@@ -13,9 +13,16 @@ export function SignUp() {
 
   const submit = async (event) => {
     event.preventDefault();
-    setApiProgress(true);
     setSuccessMessage();
     setErrorMessage();
+    const form = event.target;
+    if (!form.checkValidity()) {
+      setErrors({ email: "Invalid email" });
+      return;
+    }
+
+    setApiProgress(true);
+
     try {
       const response = await fetch("/api/users", {
         method: "POST",
@@ -39,7 +46,7 @@ export function SignUp() {
 
   return (
     <div class="col-lg-6 offset-lg-3 col-md-8 offset-md-2">
-      <form class="card" onSubmit={submit}>
+      <form class="card" onSubmit={submit} noValidate>
         <div class="card-header text-center">
           <h1>Sign Up</h1>
         </div>
@@ -48,7 +55,12 @@ export function SignUp() {
             <label for="email" class="form-label">
               Email
             </label>
-            <input id="email" class="form-control" onInput={onInputEmail} />
+            <input
+              id="email"
+              class="form-control"
+              onInput={onInputEmail}
+              type="email"
+            />
             <span class="small text-danger">{errors().email}</span>
           </div>
           <Show when={errorMessage()}>
