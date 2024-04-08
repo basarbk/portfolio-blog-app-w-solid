@@ -6,7 +6,7 @@ export function Callback() {
   const [searchParams] = useSearchParams();
   const [status, setStatus] = createSignal("loading");
   const [message, setMessage] = createSignal();
-  const { setAuth } = useAuth();
+  const { setLoggedIn } = useAuth();
 
   createEffect(async () => {
     setStatus("loading");
@@ -26,7 +26,7 @@ export function Callback() {
         setMessage("Account is created");
         setStatus("success");
         setMessage("Account is created");
-        setAuth(body);
+        setLoggedIn(body);
       } else {
         setStatus("fail");
         setMessage(body.message);

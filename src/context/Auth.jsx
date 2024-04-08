@@ -22,8 +22,16 @@ export function AuthProvider(props) {
     localStorage.setItem("auth", JSON.stringify(auth));
   });
 
+  const setLoggedIn = (user) => {
+    setAuth(user);
+  };
+
+  const setLoggedOut = () => {
+    setAuth({ id: 0, name: null, email: null, handle: null, image: null });
+  };
+
   return (
-    <AuthContext.Provider value={{ auth, setAuth }}>
+    <AuthContext.Provider value={{ auth, setLoggedIn, setLoggedOut }}>
       {props.children}
     </AuthContext.Provider>
   );

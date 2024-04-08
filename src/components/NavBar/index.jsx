@@ -1,5 +1,6 @@
 import { Match, Switch } from "solid-js";
 import { useAuth } from "../../context/Auth";
+import { Logout } from "./components/Logout";
 
 export function NavBar() {
   const { auth } = useAuth();
@@ -21,9 +22,7 @@ export function NavBar() {
             </Match>
             <Match when={auth.id !== 0}>
               <li class="nav-item">
-                <a class="nav-link active" href="#">
-                  Logout
-                </a>
+                <Logout />
               </li>
             </Match>
           </Switch>
