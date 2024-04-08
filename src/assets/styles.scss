@@ -35,3 +35,13 @@ $primary: #cb095a;
         transform: translate(-2px, -2px);
     }
 }
+
+.no-outline {
+    &:focus {
+        outline: none;
+    }
+}
+
+.editor-base {
+    height: calc(100vh - 75px)
+}
