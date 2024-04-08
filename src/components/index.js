@@ -3,3 +3,4 @@ export * from "./AppButton";
 export * from "./AppInput";
 export * from "./NavBar";
 export * from "./AppSpinner";
+export * from "./AppToast";

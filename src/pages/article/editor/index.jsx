@@ -1,4 +1,4 @@
-import { AppButton } from "../../../components";
+import { AppButton, AppToast } from "../../../components";
 import { Editor } from "./components/Editor";
 import { Show, createEffect, createSignal, on } from "solid-js";
 
@@ -10,6 +10,7 @@ export function ArticleEditor() {
   const [saveProgress, setSaveProgress] = createSignal(false);
   const [publishProgress, setPublishProgress] = createSignal(false);
   const [errors, setErrors] = createSignal({});
+  const [error, setError] = createSignal();
 
   createEffect(
     on(title, () => {
@@ -35,6 +36,7 @@ export function ArticleEditor() {
 
   const saveArticle = async (event) => {
     event.preventDefault();
+    setError();
     const form = event.target;
     if (!form.checkValidity()) {
       const errors = {
@@ -73,12 +75,14 @@ export function ArticleEditor() {
         setErrors(body.validationErrors);
       }
     } catch {
+      setError("Unexpected error occured, please try again");
     } finally {
       setSaveProgress(false);
     }
   };
 
   const togglePublish = async () => {
+    setError();
     setPublishProgress(true);
     try {
       const response = await fetch(`/api/articles/${id()}/publish`, {
@@ -88,30 +92,38 @@ export function ArticleEditor() {
         setPublished((previous) => !previous);
       }
     } catch {
+      setError("Unexpected error occured, please try again");
     } finally {
       setPublishProgress(false);
     }
   };
 
   return (
-    <form onSubmit={saveArticle} noValidate>
-      <div class="d-flex flex-column editor-base">
-        <Editor setTitle={setTitle} setContent={setContent} errors={errors()} />
-        <div class="py-3 px-2 d-flex gap-2">
-          <Show when={id()}>
-            <AppButton
-              onClick={togglePublish}
-              variant={published() ? "secondary" : "primary"}
-              loading={publishProgress()}
-            >
-              {published() ? "Unpublish" : "Publish"}
+    <>
+      <form onSubmit={saveArticle} noValidate>
+        <div class="d-flex flex-column editor-base">
+          <Editor
+            setTitle={setTitle}
+            setContent={setContent}
+            errors={errors()}
+          />
+          <div class="py-3 px-2 d-flex gap-2">
+            <Show when={id()}>
+              <AppButton
+                onClick={togglePublish}
+                variant={published() ? "secondary" : "primary"}
+                loading={publishProgress()}
+              >
+                {published() ? "Unpublish" : "Publish"}
+              </AppButton>
+            </Show>
+            <AppButton variant="success" loading={saveProgress()} type="submit">
+              {id() ? "Update" : "Save"}
             </AppButton>
-          </Show>
-          <AppButton variant="success" loading={saveProgress()} type="submit">
-            {id() ? "Update" : "Save"}
-          </AppButton>
+          </div>
         </div>
-      </div>
-    </form>
+      </form>
+      <AppToast message={error()} />
+    </>
   );
 }
