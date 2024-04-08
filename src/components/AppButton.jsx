@@ -1,3 +1,5 @@
+import { AppSpinner } from "./AppSpinner";
+
 export function AppButton(props) {
   return (
     <button
@@ -5,10 +7,7 @@ export function AppButton(props) {
       class={`btn btn-${props.variant ?? "primary"}`}
     >
       <Show when={props.loading}>
-        <span
-          class="spinner-border spinner-border-sm"
-          aria-hidden="true"
-        ></span>
+        <AppSpinner />
       </Show>
       {props.children}
     </button>

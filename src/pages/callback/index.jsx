@@ -1,6 +1,6 @@
 import { Switch, createEffect, createSignal } from "solid-js";
 import { useSearchParams } from "@solidjs/router";
-import { AppAlert } from "../../components";
+import { AppAlert, AppSpinner } from "../../components";
 export function Callback() {
   const [searchParams] = useSearchParams();
   const [status, setStatus] = createSignal("loading");
@@ -32,13 +32,15 @@ export function Callback() {
     }
   });
   return (
-    <Switch fallback={<span class="spinner-border" aria-hidden="true"></span>}>
-      <Match when={status() === "fail"}>
-        <AppAlert variant="danger">{message()}</AppAlert>
-      </Match>
-      <Match when={status() === "success"}>
-        <AppAlert>{message()}</AppAlert>
-      </Match>
-    </Switch>
+    <div>
+      <Switch fallback={<AppSpinner full size="normal" />}>
+        <Match when={status() === "fail"}>
+          <AppAlert variant="danger">{message()}</AppAlert>
+        </Match>
+        <Match when={status() === "success"}>
+          <AppAlert>{message()}</AppAlert>
+        </Match>
+      </Switch>
+    </div>
   );
 }
