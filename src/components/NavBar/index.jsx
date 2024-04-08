@@ -2,8 +2,7 @@ import { Match, Switch } from "solid-js";
 import { useAuth } from "../../context/Auth";
 
 export function NavBar() {
-  const auth = useAuth();
-  console.log(auth);
+  const { auth } = useAuth();
   return (
     <nav class="navbar navbar-expand bg-primary" data-bs-theme="dark">
       <div class="container-fluid">

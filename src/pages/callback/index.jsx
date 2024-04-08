@@ -1,10 +1,13 @@
 import { Switch, createEffect, createSignal } from "solid-js";
 import { useSearchParams } from "@solidjs/router";
 import { AppAlert, AppSpinner } from "../../components";
+import { useAuth } from "../../context/Auth";
 export function Callback() {
   const [searchParams] = useSearchParams();
   const [status, setStatus] = createSignal("loading");
   const [message, setMessage] = createSignal();
+  const { setAuth } = useAuth();
+
   createEffect(async () => {
     setStatus("loading");
     try {
@@ -22,6 +25,8 @@ export function Callback() {
       if (response.status === 200) {
         setMessage("Account is created");
         setStatus("success");
+        setMessage("Account is created");
+        setAuth(body);
       } else {
         setStatus("fail");
         setMessage(body.message);
