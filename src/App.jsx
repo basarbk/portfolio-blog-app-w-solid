@@ -1,10 +1,11 @@
-import { SignUp } from "./pages/sign-up";
+import { NavBar } from "./components";
 
-function App() {
+function App(props) {
   return (
-    <div class="container">
-      <SignUp />
-    </div>
+    <>
+      <NavBar />
+      <div class="container mt-3">{props.children}</div>
+    </>
   );
 }
 

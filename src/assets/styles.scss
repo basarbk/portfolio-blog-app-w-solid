@@ -24,3 +24,14 @@ $primary: #cb095a;
 .alert {
     border-width: 2px;
 }
+
+.navbar {
+    border-bottom: 3px solid var(--bs-black);
+}
+
+.navbar a {
+    &:hover {
+        text-shadow: 2px 2px var(--bs-black);
+        transform: translate(-2px, -2px);
+    }
+}
