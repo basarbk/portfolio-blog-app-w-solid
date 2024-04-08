@@ -6,6 +6,7 @@ export function AppButton(props) {
       disabled={props.disabled || props.loading}
       class={`btn btn-${props.variant ?? "primary"}`}
       onClick={props.onClick}
+      type={props.type}
     >
       <Show when={props.loading}>
         <AppSpinner />

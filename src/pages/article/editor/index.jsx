@@ -1,6 +1,6 @@
 import { AppButton } from "../../../components";
 import { Editor } from "./components/Editor";
-import { Show, createSignal } from "solid-js";
+import { Show, createEffect, createSignal, on } from "solid-js";
 
 export function ArticleEditor() {
   const [title, setTitle] = createSignal();
@@ -9,8 +9,50 @@ export function ArticleEditor() {
   const [published, setPublished] = createSignal(false);
   const [saveProgress, setSaveProgress] = createSignal(false);
   const [publishProgress, setPublishProgress] = createSignal(false);
+  const [errors, setErrors] = createSignal({});
 
-  const saveArticle = async () => {
+  createEffect(
+    on(title, () => {
+      setErrors((previousErrors) => {
+        return {
+          ...previousErrors,
+          title: undefined,
+        };
+      });
+    })
+  );
+
+  createEffect(
+    on(content, () => {
+      setErrors((previousErrors) => {
+        return {
+          ...previousErrors,
+          content: undefined,
+        };
+      });
+    })
+  );
+
+  const saveArticle = async (event) => {
+    event.preventDefault();
+    const form = event.target;
+    if (!form.checkValidity()) {
+      const errors = {
+        title: undefined,
+        content: undefined,
+      };
+      const [titleTextArea, contentTextArea] =
+        form.querySelectorAll("textarea");
+      if (!titleTextArea.checkValidity()) {
+        errors.title = "Title is required";
+      }
+      if (!contentTextArea.checkValidity()) {
+        errors.content = "Content is required";
+      }
+      setErrors(errors);
+      return;
+    }
+
     setSaveProgress(true);
     try {
       const url = id() ? `/api/articles/${id()}` : "/api/articles";
@@ -27,6 +69,8 @@ export function ArticleEditor() {
       const body = await response.json();
       if (response.status === 201) {
         setId(body.id);
+      } else if (response.status === 400) {
+        setErrors(body.validationErrors);
       }
     } catch {
     } finally {
@@ -50,26 +94,24 @@ export function ArticleEditor() {
   };
 
   return (
-    <div class="d-flex flex-column editor-base">
-      <Editor setTitle={setTitle} setContent={setContent} />
-      <div class="py-3 px-2 d-flex gap-2">
-        <Show when={id()}>
-          <AppButton
-            onClick={togglePublish}
-            variant={published() ? "secondary" : "primary"}
-            loading={publishProgress()}
-          >
-            {published() ? "Unpublish" : "Publish"}
+    <form onSubmit={saveArticle} noValidate>
+      <div class="d-flex flex-column editor-base">
+        <Editor setTitle={setTitle} setContent={setContent} errors={errors()} />
+        <div class="py-3 px-2 d-flex gap-2">
+          <Show when={id()}>
+            <AppButton
+              onClick={togglePublish}
+              variant={published() ? "secondary" : "primary"}
+              loading={publishProgress()}
+            >
+              {published() ? "Unpublish" : "Publish"}
+            </AppButton>
+          </Show>
+          <AppButton variant="success" loading={saveProgress()} type="submit">
+            {id() ? "Update" : "Save"}
           </AppButton>
-        </Show>
-        <AppButton
-          variant="success"
-          onClick={saveArticle}
-          loading={saveProgress()}
-        >
-          {id() ? "Update" : "Save"}
-        </AppButton>
+        </div>
       </div>
-    </div>
+    </form>
   );
 }
