@@ -47,7 +47,7 @@ export function Callback() {
           <AppAlert variant="danger">{message()}</AppAlert>
         </Match>
         <Match when={status() === "success"}>
-          <AppAlert>{message()}</AppAlert>
+          <a href="/article/new">Post Article</a>
         </Match>
       </Switch>
     </div>

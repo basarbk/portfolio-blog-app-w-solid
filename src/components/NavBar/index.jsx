@@ -27,6 +27,11 @@ export function NavBar() {
             </Match>
             <Match when={auth.id !== 0}>
               <li class="nav-item">
+                <a class="nav-link active" href="/article/new">
+                  Post Article
+                </a>
+              </li>
+              <li class="nav-item">
                 <Logout />
               </li>
             </Match>

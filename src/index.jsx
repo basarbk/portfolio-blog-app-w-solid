@@ -8,6 +8,7 @@ import { SignUp } from "./pages/sign-up";
 import { Callback } from "./pages/callback";
 import { AuthProvider } from "./context/Auth";
 import { Login } from "./pages/login";
+import { ArticleEditor } from "./pages/article";
 
 const root = document.getElementById("root");
 
@@ -25,6 +26,7 @@ render(
         <Route path="/signup" component={SignUp} />
         <Route path="/login" component={Login} />
         <Route path="/callback" component={Callback} />
+        <Route path="/article/new" component={ArticleEditor} />
       </Router>
     </AuthProvider>
   ),
