@@ -6,6 +6,7 @@ import { Router, Route } from "@solidjs/router";
 import { Home } from "./pages/home";
 import { SignUp } from "./pages/sign-up";
 import { Callback } from "./pages/callback";
+import { AuthProvider } from "./context/Auth";
 
 const root = document.getElementById("root");
 
@@ -17,11 +18,13 @@ if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
 
 render(
   () => (
-    <Router root={App}>
-      <Route path="/" component={Home} />
-      <Route path="/signup" component={SignUp} />
-      <Route path="/callback" component={Callback} />
-    </Router>
+    <AuthProvider>
+      <Router root={App}>
+        <Route path="/" component={Home} />
+        <Route path="/signup" component={SignUp} />
+        <Route path="/callback" component={Callback} />
+      </Router>
+    </AuthProvider>
   ),
   root
 );
