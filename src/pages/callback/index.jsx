@@ -1,5 +1,5 @@
 import { Switch, createEffect, createSignal } from "solid-js";
-import { useSearchParams } from "@solidjs/router";
+import { useNavigate, useSearchParams } from "@solidjs/router";
 import { AppAlert, AppSpinner } from "../../components";
 import { useAuth } from "../../context/Auth";
 export function Callback() {
@@ -7,6 +7,7 @@ export function Callback() {
   const [status, setStatus] = createSignal("loading");
   const [message, setMessage] = createSignal();
   const { setLoggedIn } = useAuth();
+  const navigate = useNavigate();
 
   createEffect(async () => {
     setStatus("loading");
@@ -23,10 +24,13 @@ export function Callback() {
       });
       const body = await response.json();
       if (response.status === 200) {
-        setMessage("Account is created");
-        setStatus("success");
-        setMessage("Account is created");
         setLoggedIn(body);
+        if (searchParams.operation === "login") {
+          navigate("/");
+        } else {
+          setStatus("success");
+          setMessage("Account is created");
+        }
       } else {
         setStatus("fail");
         setMessage(body.message);
