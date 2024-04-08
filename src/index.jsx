@@ -7,6 +7,7 @@ import { Home } from "./pages/home";
 import { SignUp } from "./pages/sign-up";
 import { Callback } from "./pages/callback";
 import { AuthProvider } from "./context/Auth";
+import { Login } from "./pages/login";
 
 const root = document.getElementById("root");
 
@@ -22,6 +23,7 @@ render(
       <Router root={App}>
         <Route path="/" component={Home} />
         <Route path="/signup" component={SignUp} />
+        <Route path="/login" component={Login} />
         <Route path="/callback" component={Callback} />
       </Router>
     </AuthProvider>

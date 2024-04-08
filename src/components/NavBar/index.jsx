@@ -15,6 +15,11 @@ export function NavBar() {
           <Switch>
             <Match when={auth.id === 0}>
               <li class="nav-item">
+                <a class="nav-link active" href="/login">
+                  Login
+                </a>
+              </li>
+              <li class="nav-item">
                 <a class="nav-link active" href="/signup">
                   Sign Up
                 </a>
