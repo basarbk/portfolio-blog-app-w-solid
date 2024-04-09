@@ -1,16 +1,31 @@
 import { createStore } from "solid-js/store";
-import { For, Show, onMount } from "solid-js";
+import { For, Show, onMount, onCleanup } from "solid-js";
 import { AppButton } from "../../components";
 export function Home() {
   const [data, setData] = createStore({
     content: [],
     page: 0,
-    size: 5,
+    size: 10,
     total: 0,
   });
 
+  const scrollListener = () => {
+    if (data.page >= data.total - 1) return;
+    if (
+      window.scrollY + window.innerHeight >=
+      document.documentElement.scrollHeight
+    ) {
+      loadPageData(data.page + 1);
+    }
+  };
+
   onMount(() => {
     loadPageData();
+    window.addEventListener("scroll", scrollListener);
+  });
+
+  onCleanup(() => {
+    window.removeEventListener("scroll", scrollListener);
   });
 
   const loadPageData = async (pageIndex = 0) => {
