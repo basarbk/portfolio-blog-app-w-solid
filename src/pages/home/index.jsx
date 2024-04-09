@@ -53,7 +53,14 @@ export function Home() {
       <For each={data.content} fallback={<span>No items</span>}>
         {(article) => (
           <div class="card mb-3">
-            <div class="card-body">{article.title}</div>
+            <div class="card-body">
+              <a
+                class="text-decoration-none fs-3 text-dark"
+                href={`/${article.author.handle}/${article.slug}`}
+              >
+                {article.title}
+              </a>
+            </div>
           </div>
         )}
       </For>
