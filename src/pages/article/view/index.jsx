@@ -1,20 +1,9 @@
-import { ErrorBoundary, Suspense, createResource } from "solid-js";
-import { useIsRouting, useParams } from "@solidjs/router";
+import { ErrorBoundary, Suspense } from "solid-js";
 import { AppAlert, AppSpinner } from "../../../components";
-
-const fetchArticle = async (id) => {
-  const result = await fetch(`/api/articles/${id}`);
-  const body = await result.json();
-  if (result.status === 200) return body;
-  throw new Error(body.message);
-};
+import { MoreArticles } from "./components/MoreArticles";
+import { MainContent } from "./components/MainContent";
 
 export function ArticleView() {
-  const params = useParams();
-  const isRouting = useIsRouting();
-
-  const [article] = createResource(() => params.idOrSlug, fetchArticle);
-
   return (
     <Suspense fallback={<AppSpinner full size="regular" />}>
       <ErrorBoundary
@@ -22,16 +11,14 @@ export function ArticleView() {
           <AppAlert variant="danger">{error.message}</AppAlert>
         )}
       >
-        <div class="placeholder-glow">
-          <div
-            classList={{
-              "placeholder rounded w-100": isRouting(),
-            }}
-          >
-            <main class="bg-white border rounded py-3 px-5">
-              <h1 class="text-capitalize">{article()?.title}</h1>
-              <div>{article()?.content}</div>
-            </main>
+        <div class="row">
+          <div class="col-lg-8">
+            <MainContent />
+          </div>
+          <div class="col-lg-4 d-none d-lg-block">
+            <Suspense fallback={<AppSpinner full size="regular" />}>
+              <MoreArticles />
+            </Suspense>
           </div>
         </div>
       </ErrorBoundary>
