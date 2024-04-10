@@ -1,6 +1,7 @@
 import { createStore } from "solid-js/store";
 import { For, Show, onMount, onCleanup, createEffect, on } from "solid-js";
 import { AppButton } from "../AppButton";
+import { ArticleCard } from "./components/ArticleCard";
 
 export function Feed(props) {
   const [data, setData] = createStore({
@@ -66,18 +67,7 @@ export function Feed(props) {
   return (
     <div>
       <For each={data.content} fallback={<span>No items</span>}>
-        {(article) => (
-          <div class="card mb-3">
-            <div class="card-body">
-              <a
-                class="text-decoration-none fs-3 text-dark"
-                href={`/${article.author.handle}/${article.slug}`}
-              >
-                {article.title}
-              </a>
-            </div>
-          </div>
-        )}
+        {(article) => <ArticleCard article={article} />}
       </For>
       <Show when={data.page < data.total - 1}>
         <AppButton

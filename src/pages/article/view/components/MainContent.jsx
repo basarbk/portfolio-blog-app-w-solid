@@ -1,5 +1,6 @@
-import { createResource } from "solid-js";
+import { Show, createResource } from "solid-js";
 import { useIsRouting, useParams } from "@solidjs/router";
+import { ArticleInfo } from "../../../../components/ArticleInfo";
 
 const fetchArticle = async (id) => {
   const result = await fetch(`/api/articles/${id}`);
@@ -21,6 +22,12 @@ export function MainContent() {
         }}
       >
         <main class="bg-white border rounded py-3 px-5">
+          <Show when={article()}>
+            <ArticleInfo
+              author={article().author}
+              publishedAt={article().publishedAt}
+            />
+          </Show>
           <h1 class="text-capitalize">{article()?.title}</h1>
           <div>{article()?.content}</div>
         </main>
