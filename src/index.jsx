@@ -9,6 +9,7 @@ import { Callback } from "./pages/callback";
 import { AuthProvider } from "./context/Auth";
 import { Login } from "./pages/login";
 import { ArticleEditor, ArticleView } from "./pages/article";
+import { Author } from "./pages/author";
 
 const root = document.getElementById("root");
 
@@ -28,6 +29,7 @@ render(
         <Route path="/callback" component={Callback} />
         <Route path="/article/new" component={ArticleEditor} />
         <Route path="/:handle/:idOrSlug" component={ArticleView} />
+        <Route path="/:handle" component={Author} />
       </Router>
     </AuthProvider>
   ),
