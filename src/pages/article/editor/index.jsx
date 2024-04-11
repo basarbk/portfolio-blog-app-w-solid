@@ -2,11 +2,13 @@ import { AppButton, AppToast } from "../../../components";
 import { Editor } from "./components/Editor";
 import { Show, createEffect, createSignal, on } from "solid-js";
 
-export function ArticleEditor() {
-  const [title, setTitle] = createSignal();
-  const [content, setContent] = createSignal();
-  const [id, setId] = createSignal(0);
-  const [published, setPublished] = createSignal(false);
+export function ArticleEditor(props) {
+  const [title, setTitle] = createSignal(props.article?.title ?? "");
+  const [content, setContent] = createSignal(props.article?.content ?? "");
+  const [id, setId] = createSignal(props.article?.id ?? 0);
+  const [published, setPublished] = createSignal(
+    props.article?.published ?? false
+  );
   const [saveProgress, setSaveProgress] = createSignal(false);
   const [publishProgress, setPublishProgress] = createSignal(false);
   const [errors, setErrors] = createSignal({});
@@ -103,7 +105,9 @@ export function ArticleEditor() {
       <form onSubmit={saveArticle} noValidate>
         <div class="d-flex flex-column editor-base">
           <Editor
+            title={title()}
             setTitle={setTitle}
+            content={content()}
             setContent={setContent}
             errors={errors()}
           />

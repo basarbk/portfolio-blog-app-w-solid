@@ -11,6 +11,7 @@ export function Editor(props) {
           "editor-error": props.errors.title,
         }}
         required
+        value={props.title}
         onInput={(event) => props.setTitle(event.target.value)}
       />
       <span class="text-danger small">{props.errors.title}</span>
@@ -23,6 +24,7 @@ export function Editor(props) {
           "editor-error": props.errors.content,
         }}
         required
+        value={props.content}
         onInput={(event) => props.setContent(event.target.value)}
       />
       <span class="text-danger small">{props.errors.content}</span>
