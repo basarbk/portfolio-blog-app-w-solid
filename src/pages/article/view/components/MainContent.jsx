@@ -2,6 +2,7 @@ import { Show, createResource } from "solid-js";
 import { useIsRouting, useParams } from "@solidjs/router";
 import { ArticleInfo } from "../../../../components/ArticleInfo";
 import { useAuth } from "../../../../context/Auth";
+import { PublishButton } from "../../components/PublishButton";
 
 const fetchArticle = async (id) => {
   const result = await fetch(`/api/articles/${id}`);
@@ -15,7 +16,20 @@ export function MainContent() {
   const isRouting = useIsRouting();
   const { auth } = useAuth();
 
-  const [article] = createResource(() => params.idOrSlug, fetchArticle);
+  const [article, { mutate }] = createResource(
+    () => params.idOrSlug,
+    fetchArticle
+  );
+
+  const setPublishedAt = (publishedAt) => {
+    mutate((article) => {
+      return {
+        ...article,
+        publishedAt,
+      };
+    });
+  };
+
   return (
     <div class="placeholder-glow">
       <div
@@ -34,13 +48,20 @@ export function MainContent() {
               </Show>
             </div>
             <Show when={article()?.author?.handle === auth.handle}>
-              <a
-                class="btn btn-warning icon-link"
-                href={`/${article()?.author?.handle}/${params.idOrSlug}/edit`}
-              >
-                <span class="material-symbols-outlined">edit</span>
-                Edit
-              </a>
+              <div class="d-flex gap-2">
+                <a
+                  class="btn btn-warning icon-link"
+                  href={`/${article()?.author?.handle}/${params.idOrSlug}/edit`}
+                >
+                  <span class="material-symbols-outlined">edit</span>
+                  Edit
+                </a>
+                <PublishButton
+                  id={article()?.id}
+                  published={article()?.published}
+                  setPublishedAt={setPublishedAt}
+                />
+              </div>
             </Show>
           </div>
 

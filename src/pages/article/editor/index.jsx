@@ -1,4 +1,6 @@
 import { AppButton, AppToast } from "../../../components";
+import { useAuth } from "../../../context/Auth";
+import { PublishButton } from "../components/PublishButton";
 import { Editor } from "./components/Editor";
 import { Show, createEffect, createSignal, on } from "solid-js";
 
@@ -6,13 +8,10 @@ export function ArticleEditor(props) {
   const [title, setTitle] = createSignal(props.article?.title ?? "");
   const [content, setContent] = createSignal(props.article?.content ?? "");
   const [id, setId] = createSignal(props.article?.id ?? 0);
-  const [published, setPublished] = createSignal(
-    props.article?.published ?? false
-  );
   const [saveProgress, setSaveProgress] = createSignal(false);
-  const [publishProgress, setPublishProgress] = createSignal(false);
   const [errors, setErrors] = createSignal({});
   const [error, setError] = createSignal();
+  const { auth } = useAuth();
 
   createEffect(
     on(title, () => {
@@ -83,23 +82,6 @@ export function ArticleEditor(props) {
     }
   };
 
-  const togglePublish = async () => {
-    setError();
-    setPublishProgress(true);
-    try {
-      const response = await fetch(`/api/articles/${id()}/publish`, {
-        method: "PATCH",
-      });
-      if (response.status === 200) {
-        setPublished((previous) => !previous);
-      }
-    } catch {
-      setError("Unexpected error occured, please try again");
-    } finally {
-      setPublishProgress(false);
-    }
-  };
-
   return (
     <>
       <form onSubmit={saveArticle} noValidate>
@@ -113,17 +95,24 @@ export function ArticleEditor(props) {
           />
           <div class="py-3 px-2 d-flex gap-2">
             <Show when={id()}>
-              <AppButton
-                onClick={togglePublish}
-                variant={published() ? "secondary" : "primary"}
-                loading={publishProgress()}
-              >
-                {published() ? "Unpublish" : "Publish"}
-              </AppButton>
+              <PublishButton
+                id={id()}
+                published={props.article?.published}
+                setError={setError}
+              />
             </Show>
             <AppButton variant="success" loading={saveProgress()} type="submit">
               {id() ? "Update" : "Save"}
             </AppButton>
+            <Show when={id()}>
+              <a
+                class="btn btn-warning icon-link"
+                href={`/${auth.handle}/${id()}`}
+              >
+                <span class="material-symbols-outlined">preview</span>
+                Preview
+              </a>
+            </Show>
           </div>
         </div>
       </form>
