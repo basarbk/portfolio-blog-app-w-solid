@@ -3,6 +3,8 @@ import { useIsRouting, useParams } from "@solidjs/router";
 import { ArticleInfo } from "../../../../components/ArticleInfo";
 import { useAuth } from "../../../../context/Auth";
 import { PublishButton } from "../../components/PublishButton";
+import marked from "./markdownParser";
+import "highlight.js/styles/atom-one-light.min.css";
 
 const fetchArticle = async (id) => {
   const result = await fetch(`/api/articles/${id}`);
@@ -66,7 +68,9 @@ export function MainContent() {
           </div>
 
           <h1 class="text-capitalize">{article()?.title}</h1>
-          <div>{article()?.content}</div>
+          <Show when={article()}>
+            <div innerHTML={marked.parse(article()?.content)}></div>
+          </Show>
         </main>
       </div>
     </div>

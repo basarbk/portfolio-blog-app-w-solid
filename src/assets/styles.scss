@@ -58,3 +58,8 @@ $primary: #cb095a;
     max-width: 200px;
     transition: opacity 0.3s ease
 }
+
+code {
+    border: 1px solid var(--bs-black);
+    border-radius: 3px
+}
