@@ -1,4 +1,7 @@
+import { Toolbar } from "./Toolbar";
+
 export function Editor(props) {
+  let contentTextArea;
   return (
     <div class="bg-white border rounded p-3 d-flex flex-column flex-grow-1">
       <textarea
@@ -15,7 +18,12 @@ export function Editor(props) {
         onInput={(event) => props.setTitle(event.target.value)}
       />
       <span class="text-danger small">{props.errors.title}</span>
+      <Toolbar
+        textInput={() => contentTextArea}
+        setContent={props.setContent}
+      />
       <textarea
+        ref={contentTextArea}
         style="resize:none"
         placeholder="Write your post content here"
         class="flex-grow-1 no-outline"
