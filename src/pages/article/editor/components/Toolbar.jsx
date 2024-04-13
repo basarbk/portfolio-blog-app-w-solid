@@ -1,4 +1,5 @@
-import { For } from "solid-js";
+import { For, createSignal } from "solid-js";
+import { AppToast } from "../../../../components";
 
 const actions = [
   {
@@ -21,6 +22,7 @@ const actions = [
 
 export function Toolbar(props) {
   let refImageSelector;
+  const [error, setError] = createSignal();
 
   const onClick = (syntax) => {
     const textInput = props.textInput();
@@ -34,18 +36,29 @@ export function Toolbar(props) {
   };
 
   const onSelectImage = async (event) => {
+    setError();
     const image = event.target.files[0];
     const formData = new FormData();
     formData.append("file", image);
-    const result = await fetch("/api/file/upload", {
-      method: "POST",
-      body: formData,
-    });
-    const body = await result.json();
-    const imageText = `![image alt text](/api/assets/${body.filename})`;
-    const textInput = props.textInput();
-    textInput.setRangeText(imageText);
-    props.setContent(textInput.value);
+    try {
+      const result = await fetch("/api/file/upload", {
+        method: "POST",
+        body: formData,
+      });
+      const body = await result.json();
+      if (result.status === 201) {
+        const imageText = `![image alt text](/api/assets/${body.filename})`;
+        const textInput = props.textInput();
+        textInput.setRangeText(imageText);
+        props.setContent(textInput.value);
+      } else if (result.status === 400) {
+        setError(body.validationErrors.file);
+      } else {
+        setError(body.message);
+      }
+    } catch {
+      setError("Unexpected error occured, please try again");
+    }
   };
 
   return (
@@ -76,6 +89,7 @@ export function Toolbar(props) {
           onChange={onSelectImage}
         />
       </button>
+      <AppToast message={error()} />
     </div>
   );
 }
