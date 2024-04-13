@@ -4,6 +4,7 @@ export function Editor(props) {
   let contentTextArea;
   return (
     <div class="bg-white border rounded p-3 d-flex flex-column flex-grow-1">
+      {props.children}
       <textarea
         style="resize:none"
         placeholder="New post title here"

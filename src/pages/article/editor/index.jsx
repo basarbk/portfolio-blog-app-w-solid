@@ -1,4 +1,4 @@
-import { AppButton, AppToast } from "../../../components";
+import { AppButton, AppToast, ImageSelector } from "../../../components";
 import { useAuth } from "../../../context/Auth";
 import { PublishButton } from "../components/PublishButton";
 import { Editor } from "./components/Editor";
@@ -7,6 +7,7 @@ import { Show, createEffect, createSignal, on } from "solid-js";
 export function ArticleEditor(props) {
   const [title, setTitle] = createSignal(props.article?.title ?? "");
   const [content, setContent] = createSignal(props.article?.content ?? "");
+  const [image, setImage] = createSignal(props.article?.image ?? "");
   const [id, setId] = createSignal(props.article?.id ?? 0);
   const [saveProgress, setSaveProgress] = createSignal(false);
   const [errors, setErrors] = createSignal({});
@@ -67,6 +68,7 @@ export function ArticleEditor(props) {
         body: JSON.stringify({
           title: title(),
           content: content(),
+          image: image(),
         }),
       });
       const body = await response.json();
@@ -92,7 +94,9 @@ export function ArticleEditor(props) {
             content={content()}
             setContent={setContent}
             errors={errors()}
-          />
+          >
+            <ImageSelector image={image()} setImage={setImage} />
+          </Editor>
           <div class="py-3 px-2 d-flex gap-2">
             <Show when={id()}>
               <PublishButton

@@ -5,3 +5,4 @@ export * from "./NavBar";
 export * from "./AppSpinner";
 export * from "./AppToast";
 export * from "./Feed";
+export * from "./ImageSelector";
