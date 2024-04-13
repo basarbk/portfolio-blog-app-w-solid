@@ -20,6 +20,8 @@ const actions = [
 ];
 
 export function Toolbar(props) {
+  let refImageSelector;
+
   const onClick = (syntax) => {
     const textInput = props.textInput();
     const start = textInput.selectionStart;
@@ -28,6 +30,21 @@ export function Toolbar(props) {
     let selectedText = textInput.value.substring(start, end);
     selectedText = syntax + selectedText + syntax;
     textInput.setRangeText(selectedText, start, end);
+    props.setContent(textInput.value);
+  };
+
+  const onSelectImage = async (event) => {
+    const image = event.target.files[0];
+    const formData = new FormData();
+    formData.append("file", image);
+    const result = await fetch("/api/file/upload", {
+      method: "POST",
+      body: formData,
+    });
+    const body = await result.json();
+    const imageText = `![image alt text](/api/assets/${body.filename})`;
+    const textInput = props.textInput();
+    textInput.setRangeText(imageText);
     props.setContent(textInput.value);
   };
 
@@ -46,6 +63,19 @@ export function Toolbar(props) {
           );
         }}
       </For>
+      <button
+        class="btn btn-outline-dark btn-sm icon-link"
+        type="button"
+        onClick={() => refImageSelector.click()}
+      >
+        <span class="material-symbols-outlined">image</span>
+        <input
+          ref={refImageSelector}
+          type="file"
+          hidden
+          onChange={onSelectImage}
+        />
+      </button>
     </div>
   );
 }

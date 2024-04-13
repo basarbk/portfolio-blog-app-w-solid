@@ -63,3 +63,7 @@ code {
     border: 1px solid var(--bs-black);
     border-radius: 3px
 }
+
+p.markdown img {
+    max-width: 100%;
+}
