@@ -33,9 +33,6 @@ export function NavBar() {
                 </a>
               </li>
               <li class="nav-item">
-                <Logout />
-              </li>
-              <li class="nav-item">
                 <User />
               </li>
             </Match>

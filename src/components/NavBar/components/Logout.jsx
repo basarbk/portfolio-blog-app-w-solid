@@ -11,7 +11,7 @@ export function Logout() {
     } catch {}
   };
   return (
-    <a class="nav-link active" href="#" onClick={onClick}>
+    <a class="dropdown-item" href="#" onClick={onClick}>
       Logout
     </a>
   );
