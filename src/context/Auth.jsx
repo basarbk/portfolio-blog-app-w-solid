@@ -30,8 +30,16 @@ export function AuthProvider(props) {
     setAuth({ id: 0, name: null, email: null, handle: null, image: null });
   };
 
+  const userUpdated = (name, image) => {
+    setAuth("name", name);
+    if (image !== undefined) {
+      setAuth("image", image);
+    }
+  };
   return (
-    <AuthContext.Provider value={{ auth, setLoggedIn, setLoggedOut }}>
+    <AuthContext.Provider
+      value={{ auth, setLoggedIn, setLoggedOut, userUpdated }}
+    >
       {props.children}
     </AuthContext.Provider>
   );

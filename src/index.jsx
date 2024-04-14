@@ -14,6 +14,7 @@ import {
   ArticleView,
 } from "./pages/article";
 import { Author } from "./pages/author";
+import { EditUser } from "./pages/author/edit";
 
 const root = document.getElementById("root");
 
@@ -35,6 +36,7 @@ render(
         <Route path="/:handle/:idOrSlug" component={ArticleView} />
         <Route path="/:handle/:idOrSlug/edit" component={ArticleEditWrapper} />
         <Route path="/:handle" component={Author} />
+        <Route path="/edit" component={EditUser} />
       </Router>
     </AuthProvider>
   ),

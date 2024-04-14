@@ -1,6 +1,7 @@
 import { useParams } from "@solidjs/router";
 import { Show, createResource } from "solid-js";
 import { AppImage } from "../../../components";
+import { useAuth } from "../../../context/Auth";
 
 const fetchUser = async (id) => {
   const result = await fetch(`/api/users/${id}`);
@@ -11,6 +12,7 @@ const fetchUser = async (id) => {
 
 export function ProfileCard() {
   const params = useParams();
+  const { auth } = useAuth();
 
   const [user] = createResource(() => params.handle, fetchUser);
 
@@ -30,6 +32,13 @@ export function ProfileCard() {
       <div class="card-body">
         <span class="h3">{`${user()?.name}@${user()?.handle}`}</span>
       </div>
+      <Show when={auth.handle === params.handle}>
+        <div class="card-footer">
+          <a class="btn btn-primary" href="/edit">
+            Edit
+          </a>
+        </div>
+      </Show>
     </div>
   );
 }
