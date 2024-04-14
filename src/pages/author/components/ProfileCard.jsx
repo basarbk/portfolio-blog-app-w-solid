@@ -20,13 +20,11 @@ export function ProfileCard() {
     <div class="card text-center">
       <div class="card-header">
         <div class="m-auto" style="width:200px">
-          <Show when={user()}>
-            <AppImage
-              class="rounded-circle shadow-sm"
-              image={user().image}
-              fallback="profile"
-            />
-          </Show>
+          <AppImage
+            class="rounded-circle shadow-sm"
+            image={user()?.image}
+            fallback="profile"
+          />
         </div>
       </div>
       <div class="card-body">

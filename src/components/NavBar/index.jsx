@@ -1,6 +1,7 @@
 import { Match, Switch } from "solid-js";
 import { useAuth } from "../../context/Auth";
 import { Logout } from "./components/Logout";
+import { User } from "./components/User";
 
 export function NavBar() {
   const { auth } = useAuth();
@@ -33,6 +34,9 @@ export function NavBar() {
               </li>
               <li class="nav-item">
                 <Logout />
+              </li>
+              <li class="nav-item">
+                <User />
               </li>
             </Match>
           </Switch>

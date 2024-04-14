@@ -41,9 +41,7 @@ export function MainContent() {
         }}
       >
         <main class="bg-white border rounded">
-          <Show when={article()}>
-            <AppImage image={article().image} class="rounded-top" />
-          </Show>
+          <AppImage image={article()?.image} class="rounded-top" />
           <div class="py-3 px-5">
             <div class="d-lg-flex align-items-center">
               <div class="flex-grow-1">

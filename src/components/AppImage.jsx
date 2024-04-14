@@ -8,15 +8,15 @@ export function AppImage(props) {
     "fallback",
   ]);
 
-  let imageSrc;
-  if (imageOptions.image) {
-    imageSrc = `/api/assets/${imageOptions.image}`;
-  } else {
-    imageSrc =
-      imageOptions.fallback === "profile"
+  const imageSrc = () => {
+    if (imageOptions.image) {
+      return `/api/assets/${imageOptions.image}`;
+    } else {
+      return imageOptions.fallback === "profile"
         ? defaultProfileImage
         : "https://place-hold.it/600x300/666/fff/000?text=Article%20Image";
-  }
+    }
+  };
 
   return (
     <img
@@ -24,7 +24,7 @@ export function AppImage(props) {
       classList={{
         [imageOptions.class]: true,
       }}
-      src={imageSrc}
+      src={imageSrc()}
       {...attributes}
     />
   );
