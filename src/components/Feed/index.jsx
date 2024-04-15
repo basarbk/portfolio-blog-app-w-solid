@@ -22,15 +22,12 @@ export function Feed(props) {
   };
 
   createEffect(
-    on(
-      () => props.handle,
-      () => {
-        setData("content", []);
-        setData("page", 0);
-        setData("total", 0);
-        loadPageData();
-      }
-    )
+    on([() => props.handle, () => props.filter], () => {
+      setData("content", []);
+      setData("page", 0);
+      setData("total", 0);
+      loadPageData();
+    })
   );
 
   onMount(() => {
@@ -52,6 +49,7 @@ export function Feed(props) {
           page: pageIndex,
           sort: "published_at",
           direction: "desc",
+          ...(props.filter ? { reaction: props.filter } : {}),
         })
     );
     const body = await result.json();

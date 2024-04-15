@@ -1,4 +1,12 @@
+import { createSignal } from "solid-js";
 import { Feed } from "../../components";
+import { Filter } from "./components/Filter";
 export function Home() {
-  return <Feed />;
+  const [filter, setFilter] = createSignal();
+  return (
+    <>
+      <Filter setFilter={setFilter} />
+      <Feed filter={filter()} />
+    </>
+  );
 }
