@@ -1,4 +1,5 @@
 import { createSignal } from "solid-js";
+import { useAuth } from "../context/Auth";
 
 const reactions = {
   like: {
@@ -18,7 +19,9 @@ const reactions = {
 export function ReactionButton(props) {
   const [reacted, setReacted] = createSignal(props.details.reacted);
   const [count, setCount] = createSignal(props.details.count);
+  const { auth } = useAuth();
   const onClick = async () => {
+    if (!auth.id) return;
     try {
       const result = await fetch("/api/reactions", {
         method: "POST",
@@ -48,7 +51,7 @@ export function ReactionButton(props) {
       class="icon-link"
       onClick={onClick}
       style={
-        reacted()
+        auth.id && reacted()
           ? `font-variation-settings:
     'FILL' 1,
     'wght' 400,
