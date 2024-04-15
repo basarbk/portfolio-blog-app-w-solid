@@ -1,5 +1,6 @@
 import { AppImage } from "../../AppImage";
 import { ArticleInfo } from "../../ArticleInfo";
+import { ReactionButton } from "../../ReactionButton";
 
 export function ArticleCard(props) {
   return (
@@ -23,6 +24,7 @@ export function ArticleCard(props) {
           >
             {props.article.title}
           </a>
+          <ReactionButton entityId={props.article.id} />
         </div>
       </div>
     </div>
