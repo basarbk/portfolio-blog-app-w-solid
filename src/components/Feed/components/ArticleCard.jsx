@@ -24,7 +24,23 @@ export function ArticleCard(props) {
           >
             {props.article.title}
           </a>
-          <ReactionButton entityId={props.article.id} />
+          <div class="d-flex gap-3">
+            <ReactionButton
+              reaction="like"
+              entityId={props.article.id}
+              details={props.article.reactions.like}
+            />
+            <ReactionButton
+              reaction="hot"
+              entityId={props.article.id}
+              details={props.article.reactions.hot}
+            />
+            <ReactionButton
+              reaction="readingList"
+              entityId={props.article.id}
+              details={props.article.reactions.readingList}
+            />
+          </div>
         </div>
       </div>
     </div>
